@@ -1,0 +1,26 @@
+back-office tool
+in scope:
+	orders management
+		order view (master detail view)
+			main page with basic order information
+				orderer name
+				delivery address
+				order id
+				order date
+				order sum total
+				order status
+			clickable order items in the main view (detailed order information)
+				list of items in the order
+				item name
+				item price
+				item quantity
+	authentication
+		users
+		user roles(user, operator, admin)
+			user - list only own orders
+			operator - list all orders
+			admin - list/remove all orders
+
+out of scope:
+	create orders
+	user management

@@ -3,7 +3,7 @@ in scope:
 	orders management
 		order view (master detail view)
 			main page with basic order information
-				orderer name
+				user name
 				delivery address
 				order id
 				order date

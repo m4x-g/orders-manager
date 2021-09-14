@@ -1,17 +1,25 @@
 package org.example.ordersmanager.data.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "role")
     private String role;
 
     public User(String name, String password, String address, String role) {

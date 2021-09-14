@@ -7,12 +7,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
+    @GeneratedValue
+    @Column(name = "order_id")
     private Long id;
+
+    @Column(name = "order_sum_total")
     private BigDecimal sumTotal;
+
+    @Column(name = "order_status")
     private String status;
+
+    @Column(name = "order_date")
     private Date date;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull

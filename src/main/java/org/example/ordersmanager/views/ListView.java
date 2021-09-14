@@ -1,9 +1,5 @@
 package org.example.ordersmanager.views;
 
-import com.vaadin.flow.component.accordion.Accordion;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.datepicker.DatePicker;
-import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -41,12 +37,13 @@ public class ListView extends VerticalLayout {
         filterText.setPlaceholder("Filter by name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(event -> updateList());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText);
         return toolbar;
     }
 
     private void updateList() {
-        orderGrid.setItems(listService.findAllOrders());
+        orderGrid.setItems(listService.findAllOrders(filterText.getValue()));
     }
 }

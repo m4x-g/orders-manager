@@ -1,8 +1,12 @@
 package org.example.ordersmanager.data.service;
 
 import org.example.ordersmanager.data.model.Order;
+import org.example.ordersmanager.data.model.OrderItem;
+import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.model.User;
+import org.example.ordersmanager.data.repository.OrderItemRepository;
 import org.example.ordersmanager.data.repository.OrderRepository;
+import org.example.ordersmanager.data.repository.OrderedItemRepository;
 import org.example.ordersmanager.data.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +16,15 @@ import java.util.List;
 public class ListService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final OrderedItemRepository orderedItemRepository;
 
-    public ListService(OrderRepository orderRepository, UserRepository userRepository) {
+    public ListService(OrderRepository orderRepository, UserRepository userRepository,
+                       OrderItemRepository orderItemRepository, OrderedItemRepository orderedItemRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.orderedItemRepository = orderedItemRepository;
     }
 
     public List<User> findAllUsers(String stringFilter) {
@@ -50,5 +59,13 @@ public class ListService {
             //implement filter later
             return orderRepository.findAll();
         }
+    }
+
+    public List<OrderItem> findAllItems() {
+        return orderItemRepository.findAll();
+    }
+
+    public List<OrderedItem> findAllOrderedItems() {
+        return orderedItemRepository.findAll();
     }
 }

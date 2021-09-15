@@ -2,35 +2,42 @@ package org.example.ordersmanager.data.model;
 
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name = "items")
 public class OrderItem {
     @Id
     @GeneratedValue
-    private long id;
+    @Column(name = "item_id")
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "price")
     private BigDecimal price;
-    private int quantity;
+
+//    private int quantity;
 
     public OrderItem() {
     }
 
-    public OrderItem(long id, String name, BigDecimal price, int quantity) {
+    public OrderItem(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -50,11 +57,11 @@ public class OrderItem {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//    public int getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//    }
 }

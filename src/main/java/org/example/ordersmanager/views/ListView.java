@@ -39,6 +39,12 @@ public class ListView extends VerticalLayout {
         orderGrid.addColumn(order -> order.getUser().getName()).setHeader("user name");
         orderGrid.addColumn(order -> order.getUser().getAddress()).setHeader("user address");
         orderGrid.getColumns().forEach(orderColumn -> orderColumn.setAutoWidth(true));
+
+        orderGrid.asSingleSelect().addValueChangeListener(event -> getOrderInfo(event.getValue()));
+    }
+
+    private void getOrderInfo(Order order) {
+        System.out.println(order.getUser().getName());
     }
 
     private void configureOrderItemGrid() {

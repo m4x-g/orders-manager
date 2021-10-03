@@ -17,7 +17,7 @@ public class ListService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
-    private final OrderedItemRepository orderedItemRepository;
+    private static OrderedItemRepository orderedItemRepository;
 
     public ListService(OrderRepository orderRepository, UserRepository userRepository,
                        OrderItemRepository orderItemRepository, OrderedItemRepository orderedItemRepository) {
@@ -65,7 +65,11 @@ public class ListService {
         return orderItemRepository.findAll();
     }
 
-    public List<OrderedItem> findAllOrderedItems() {
-        return orderedItemRepository.findAll();
+    public static List<OrderedItem> findAllOrderedItems(Long id) {
+        if (id == null) {
+            return orderedItemRepository.findAll();
+        } else {
+            return orderedItemRepository.findAllByOrderId(id);
+        }
     }
 }

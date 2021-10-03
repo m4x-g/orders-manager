@@ -1,6 +1,8 @@
 package org.example.ordersmanager.views;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -12,12 +14,15 @@ import org.example.ordersmanager.data.model.OrderItem;
 import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.service.ListService;
 
+import java.util.List;
+
 @Route(value = "")
 @PageTitle("garbage order manager 😐")
 public class ListView extends VerticalLayout {
     Grid<Order> orderGrid = new Grid<>(Order.class);
     Grid<OrderItem> orderItemGrid = new Grid<>(OrderItem.class);
     Grid<OrderedItem> orderedItemGrid = new Grid<>(OrderedItem.class);
+    OrderView orderView = new OrderView();
     TextField filterText = new TextField();
     ListService listService;
 
@@ -25,12 +30,18 @@ public class ListView extends VerticalLayout {
         this.listService = listService;
         setSizeFull();
         configureOrderGrid();
-        configureOrderItemGrid();
-        configureOrderedItemGrid();
-        add(getToolbar(), orderGrid, orderItemGrid, orderedItemGrid);
+        orderView.setSizeFull();
+
+        add(getToolbar(), getContent());
         updateList();
-        updateOrderItemGrid();
-        updateOrderedItemGrid();
+
+//        configureOrderItemGrid();
+//        add(orderItemGrid);
+//        updateOrderItemGrid();
+
+//        configureOrderedItemGrid();
+//        add(orderedItemGrid);
+//        updateOrderedItemGrid();
     }
 
     private void configureOrderGrid() {
@@ -39,6 +50,27 @@ public class ListView extends VerticalLayout {
         orderGrid.addColumn(order -> order.getUser().getName()).setHeader("user name");
         orderGrid.addColumn(order -> order.getUser().getAddress()).setHeader("user address");
         orderGrid.getColumns().forEach(orderColumn -> orderColumn.setAutoWidth(true));
+
+//        orderGrid.asSingleSelect().addValueChangeListener(event -> getOrderInfo(event.getValue()));
+        orderGrid.asSingleSelect().addValueChangeListener(event -> orderView.showOrderDetails(event.getValue()));
+    }
+
+    private void getOrderInfo(Order order) {
+        System.out.println(order.getUser().getName());
+    }
+
+    private void toggleOrderView() {
+        if (orderView.isVisible()) {
+            orderView.setVisible(false);
+        } else {
+            orderView.setVisible(true);
+        }
+
+    }
+    private Component getContent() {
+        HorizontalLayout content = new HorizontalLayout(orderGrid);
+        content.setSizeFull();
+        return content;
     }
 
     private void configureOrderItemGrid() {
@@ -49,8 +81,11 @@ public class ListView extends VerticalLayout {
 
     private void configureOrderedItemGrid() {
         orderedItemGrid.setSizeFull();
-        orderedItemGrid.setColumns("orderId", "quantity");
-        orderedItemGrid.addColumn(orderedItem -> orderedItem.getClass().getName()).setHeader("order item");
+//        orderedItemGrid.removeAllColumns();
+//        orderedItemGrid.addColumn(orderedItem -> orderedItem.getOrderItem().getName()).setHeader("ordered item name");
+        orderedItemGrid.setColumns("orderItem.name", "quantity", "orderId");
+//        orderedItemGrid.addColumn(orderedItem -> orderedItem.getQuantity()).setHeader("quantity");
+//        orderedItemGrid.addColumn(orderedItem -> orderedItem.getOrderId()).setHeader("orderId");
         orderedItemGrid.getColumns().forEach(orderedItemColumn -> orderedItemColumn.setAutoWidth(true));
     }
 
@@ -73,6 +108,8 @@ public class ListView extends VerticalLayout {
     }
 
     private void updateOrderedItemGrid() {
-        orderedItemGrid.setItems(listService.findAllOrderedItems());
+//        List<OrderedItem> orderedItemList = listService.findAllOrderedItems();
+        List<OrderedItem> orderedItemList = listService.findAllOrderedItems(null);
+        orderedItemGrid.setItems(orderedItemList);
     }
 }

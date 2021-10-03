@@ -11,9 +11,9 @@ public class OrderedItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "item_id")
-    private List<OrderItem> orderItem;
+    private OrderItem orderItem;
 
     @Column(name = "order_id")
     private Long orderId;
@@ -24,7 +24,7 @@ public class OrderedItem {
     public OrderedItem() {
     }
 
-    public OrderedItem(Long id, List<OrderItem> orderItem, Long orderId, int quantity) {
+    public OrderedItem(Long id, OrderItem orderItem, Long orderId, int quantity) {
         this.id = id;
         this.orderItem = orderItem;
         this.orderId = orderId;
@@ -39,11 +39,11 @@ public class OrderedItem {
         this.id = id;
     }
 
-    public List<OrderItem> getOrderItem() {
+    public OrderItem getOrderItem() {
         return orderItem;
     }
 
-    public void setOrderItem(List<OrderItem> orderItem) {
+    public void setOrderItem(OrderItem orderItem) {
         this.orderItem = orderItem;
     }
 

@@ -3,6 +3,7 @@ package org.example.ordersmanager.views;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,10 +14,13 @@ import org.example.ordersmanager.data.model.Order;
 import org.example.ordersmanager.data.model.OrderItem;
 import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.service.ListService;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
-@Route(value = "")
+@Route(value = "", layout = MainLayout.class)
 @PageTitle("garbage order manager 😐")
 public class ListView extends VerticalLayout {
     Grid<Order> orderGrid = new Grid<>(Order.class);
@@ -32,7 +36,7 @@ public class ListView extends VerticalLayout {
         configureOrderGrid();
         orderView.setSizeFull();
 
-        add(getToolbar(), getContent());
+        add(getToolbar(), getContent(), paragraph());
         updateList();
 
 //        configureOrderItemGrid();
@@ -111,5 +115,10 @@ public class ListView extends VerticalLayout {
 //        List<OrderedItem> orderedItemList = listService.findAllOrderedItems();
         List<OrderedItem> orderedItemList = listService.findAllOrderedItems(null);
         orderedItemGrid.setItems(orderedItemList);
+    }
+
+    @Secured("ROLE_ADMIN")
+    private Paragraph paragraph() {
+        return new Paragraph("wizards only, fool!");
     }
 }

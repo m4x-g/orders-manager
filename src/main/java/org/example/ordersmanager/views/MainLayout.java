@@ -2,27 +2,31 @@ package org.example.ordersmanager.views;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
+import org.example.ordersmanager.security.SecurityService;
 
 public class MainLayout extends AppLayout {
+    private final SecurityService securityService;
 
-    public MainLayout() {
+    public MainLayout(SecurityService securityService) {
+        this.securityService = securityService;
         createHeader();
         createDrawer();
     }
 
     private void createHeader() {
-        H1 logo = new H1("Orders Manager");
-        logo.addClassNames("text-1", "m-m");
+        Paragraph logo = new Paragraph("orders manager");
 
-        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo);
+        Button logout = new Button("Log out", buttonClickEvent -> securityService.logout());
+
+        HorizontalLayout header = new HorizontalLayout(new DrawerToggle(), logo, logout);
         header.expand(logo);
         header.setWidth("100%");
-        header.addClassNames("py-o", "px-m");
 
         addToNavbar(header);
     }

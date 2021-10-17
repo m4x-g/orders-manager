@@ -2,6 +2,7 @@ package org.example.ordersmanager.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,11 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import static org.example.ordersmanager.security.UserRole.*;
 
 
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private static final String LOGIN_PROCESSING_URL = "/login";
@@ -21,7 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final String LOGIN_URL = "/login";
   private static final String LOGOUT_SUCCESS_URL = "/login";
 
-  /**
+  private final PasswordEncoder passwordEncoder;
+
+    public SecurityConfig(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
    * Require login to access internal pages and configure login form.
    */
   @Override
@@ -39,13 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
         // Allow all requests by logged-in users.
-        .anyRequest().permitAll()
+        .anyRequest().authenticated()
 
         // Configure the login page.
         .and().formLogin()
         .loginPage(LOGIN_URL).permitAll()
         .loginProcessingUrl(LOGIN_PROCESSING_URL)
         .failureUrl(LOGIN_FAILURE_URL)
+        .defaultSuccessUrl("/", true)
 
         // Configure logout
         .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
@@ -55,11 +67,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public UserDetailsService userDetailsService() {
     UserDetails user = User.withUsername("user")
-            .password("{noop}userpass")
+            .password(passwordEncoder.encode("pass"))
             .roles("USER")
+            .authorities(USER.getGrantedAuthorities())
             .build();
 
-    return new InMemoryUserDetailsManager(user);
+    UserDetails operator = User.withUsername("operator")
+            .password(passwordEncoder.encode("pass"))
+            .roles("OPERATOR")
+            .authorities(OPERATOR.getGrantedAuthorities())
+            .build();
+
+    UserDetails admin = User.withUsername("admin")
+            .password(passwordEncoder.encode("pass"))
+            .roles("ADMIN")
+            .authorities(ADMIN.getGrantedAuthorities())
+            .build();
+
+    return new InMemoryUserDetailsManager(user, operator, admin);
   }
 
   /**

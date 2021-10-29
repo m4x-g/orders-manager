@@ -22,6 +22,7 @@ import java.util.List;
 
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("garbage order manager 😐")
+@Secured("ROLE_ADMIN")
 public class ListView extends VerticalLayout {
     Grid<Order> orderGrid = new Grid<>(Order.class);
     Grid<OrderItem> orderItemGrid = new Grid<>(OrderItem.class);

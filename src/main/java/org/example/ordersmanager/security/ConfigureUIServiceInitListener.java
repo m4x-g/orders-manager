@@ -2,6 +2,7 @@ package org.example.ordersmanager.security;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import org.example.ordersmanager.views.LoginView;
@@ -23,5 +24,16 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
         && !SecurityUtils.isUserLoggedIn()) {
             beforeEnterEvent.rerouteTo(LoginView.class);
         }
+    }
+
+    private void beforeEnter(BeforeEnterEvent event) {
+        if(!SecurityUtils.isAccessGranted(event.getNavigationTarget())) {
+            if(SecurityUtils.isUserLoggedIn()) {
+                event.rerouteToError(NotFoundException.class);
+            } else {
+                event.rerouteTo(LoginView.class);
+            }
+        }
+
     }
 }

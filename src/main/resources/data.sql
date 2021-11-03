@@ -1,7 +1,10 @@
 INSERT INTO users (name, address, password, role)
 VALUES
 	('john doe', 'somewhere', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'user'),
+	('jake', 'ooo', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'user'),
+	('finn', 'ooo', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'user'),
 	('jane doe', 'nowhere', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'operator'),
+	('glob', 'mars', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'admin'),
 	('orgalorg', 'everywhere', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'admin');
 
 INSERT INTO orders (user_id, order_date, order_status, order_sum_total)

@@ -1,6 +1,7 @@
 package org.example.ordersmanager.views;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
@@ -29,6 +30,8 @@ public class ListView extends VerticalLayout {
     Grid<OrderedItem> orderedItemGrid = new Grid<>(OrderedItem.class);
     OrderView orderView = new OrderView();
     TextField filterText = new TextField();
+    NewOrderDialog newOrderDialog = new NewOrderDialog();
+    Button newOrder = new Button("new order");
     ListService listService;
 
     public ListView(ListService listService) {
@@ -100,7 +103,11 @@ public class ListView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(event -> updateList());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText);
+        newOrderDialog.orderForm.items.setItems(listService.findAllItems());
+        newOrderDialog.orderForm.items.setItemLabelGenerator(OrderItem::getName);
+        newOrder.addClickListener(buttonClickEvent -> newOrderDialog.showOrderDialog());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, newOrder);
         return toolbar;
     }
 

@@ -54,7 +54,7 @@ public class ListView extends VerticalLayout {
 
     private void configureOrderGrid() {
         orderGrid.setSizeFull();
-        orderGrid.setColumns("id", "sumTotal", "status", "date");
+        orderGrid.setColumns("id", "sumTotal", "status", "title", "description", "date");
         orderGrid.addColumn(order -> order.getUser().getName()).setHeader("user name");
         orderGrid.addColumn(order -> order.getUser().getAddress()).setHeader("user address");
         orderGrid.getColumns().forEach(orderColumn -> orderColumn.setAutoWidth(true));

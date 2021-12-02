@@ -20,6 +20,12 @@ public class Order {
     @Column(name = "order_status")
     private String status;
 
+    @Column(name = "order_title")
+    private String title;
+
+    @Column(name = "order_description")
+    private String description;
+
     @Column(name = "order_date")
     private Date date;
 
@@ -62,6 +68,22 @@ public class Order {
         this.status = status;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -77,5 +99,4 @@ public class Order {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

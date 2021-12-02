@@ -1,5 +1,6 @@
 package org.example.ordersmanager.data.service;
 
+import org.example.ordersmanager.auth.CustomUserDetails;
 import org.example.ordersmanager.data.model.Order;
 import org.example.ordersmanager.data.model.OrderItem;
 import org.example.ordersmanager.data.model.OrderedItem;
@@ -8,6 +9,8 @@ import org.example.ordersmanager.data.repository.OrderItemRepository;
 import org.example.ordersmanager.data.repository.OrderRepository;
 import org.example.ordersmanager.data.repository.OrderedItemRepository;
 import org.example.ordersmanager.data.repository.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,11 +56,16 @@ public class ListService {
     }
 
     public List<Order> findAllOrders(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty()) {
-            return orderRepository.findAll();
+        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_admin"))) {
+            if (stringFilter == null || stringFilter.isEmpty()) {
+                return orderRepository.findAll();
+            } else {
+                //implement filter later
+                return orderRepository.findAll();
+            }
         } else {
-            //implement filter later
-            return orderRepository.findAll();
+            return orderRepository.findAllByUserName(user.getUsername());
         }
     }
 

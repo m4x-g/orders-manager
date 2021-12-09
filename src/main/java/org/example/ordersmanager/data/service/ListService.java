@@ -57,7 +57,8 @@ public class ListService {
 
     public List<Order> findAllOrders(String stringFilter) {
         CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_admin"))) {
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_admin")) ||
+                user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_operator"))) {
             if (stringFilter == null || stringFilter.isEmpty()) {
                 return orderRepository.findAll();
             } else {

@@ -7,9 +7,12 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import org.example.ordersmanager.auth.CustomUserDetails;
 import org.example.ordersmanager.data.model.Order;
 import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.service.ListService;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -41,7 +44,12 @@ public class OrderView extends Dialog {
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
 
-        return new HorizontalLayout(save, delete, close);
+        CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_admin"))) {
+            return new HorizontalLayout(save, delete, close);
+        } else {
+            return new HorizontalLayout(close);
+        }
     }
 
     public void showOrderDetails(Order order) {

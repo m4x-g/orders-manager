@@ -20,15 +20,9 @@ public class OrderView extends Dialog {
     Grid<OrderedItem> orderedItemGrid = new Grid<>(OrderedItem.class);
 
     H1 h1 = new H1("not implemented yet 😐");
-    Button save = new Button("save", event -> {
-        this.close();
-    });
-    Button delete = new Button("delete", event -> {
-        this.close();
-    });
-    Button close = new Button("close", event -> {
-        this.close();
-    });
+    Button save = new Button("save", event -> this.close());
+    Button delete = new Button("delete", event -> this.close());
+    Button close = new Button("close", event -> this.close());
 
     public OrderView() {
         this.setCloseOnOutsideClick(false);
@@ -60,7 +54,7 @@ public class OrderView extends Dialog {
 
     private void configureOrderedItemGrid() {
         orderedItemGrid.setHeightByRows(true);
-        orderedItemGrid.setColumns("orderItem.name", "quantity", "orderItem.price");
+        orderedItemGrid.setColumns("id", "orderId", "name", "price", "quantity");
         orderedItemGrid.getColumns().forEach(orderedItemColumn -> orderedItemColumn.setAutoWidth(true));
     }
 

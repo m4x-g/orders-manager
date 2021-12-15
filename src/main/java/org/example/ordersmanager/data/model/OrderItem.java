@@ -1,10 +1,5 @@
 package org.example.ordersmanager.data.model;
 
-
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import net.bytebuddy.implementation.bind.annotation.IgnoreForBinding;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -21,8 +16,6 @@ public class OrderItem {
 
     @Column(name = "price")
     private BigDecimal price;
-
-//    private int quantity;
 
     public OrderItem() {
     }
@@ -56,12 +49,4 @@ public class OrderItem {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
-//    public int getQuantity() {
-//        return quantity;
-//    }
-//
-//    public void setQuantity(int quantity) {
-//        this.quantity = quantity;
-//    }
 }

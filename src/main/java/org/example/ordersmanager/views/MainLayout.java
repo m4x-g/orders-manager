@@ -11,8 +11,6 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import org.example.ordersmanager.auth.CustomUserDetails;
 import org.example.ordersmanager.security.SecurityService;
-import org.springframework.boot.actuate.endpoint.SecurityContext;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class MainLayout extends AppLayout {

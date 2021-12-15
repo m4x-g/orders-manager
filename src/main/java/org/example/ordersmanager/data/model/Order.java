@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -34,14 +35,21 @@ public class Order {
     @NotNull
     private User user;
 
+    @OneToMany(mappedBy = "order")
+    private Set<OrderedItem> orderedItemSet;
+
     public Order() {
     }
 
-    public Order(BigDecimal sumTotal, String status, Date date, User user) {
+    public Order(Long id, BigDecimal sumTotal, String status, String title, String description, Date date, User user, Set<OrderedItem> orderedItemSet) {
+        this.id = id;
         this.sumTotal = sumTotal;
         this.status = status;
+        this.title = title;
+        this.description = description;
         this.date = date;
         this.user = user;
+        this.orderedItemSet = orderedItemSet;
     }
 
     public Long getId() {
@@ -98,5 +106,13 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<OrderedItem> getOrderedItemSet() {
+        return orderedItemSet;
+    }
+
+    public void setOrderedItemSet(Set<OrderedItem> orderedItemSet) {
+        this.orderedItemSet = orderedItemSet;
     }
 }

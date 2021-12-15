@@ -1,7 +1,7 @@
 package org.example.ordersmanager.data.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "ordered_items")
@@ -11,24 +11,32 @@ public class OrderedItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private OrderItem orderItem;
-
     @Column(name = "order_id")
     private Long orderId;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "price")
+    private BigDecimal price;
 
     @Column(name = "quantity")
     private int quantity;
 
+    @ManyToOne
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    private Order order;
+
     public OrderedItem() {
     }
 
-    public OrderedItem(Long id, OrderItem orderItem, Long orderId, int quantity) {
+    public OrderedItem(Long id, Long orderId, String name, BigDecimal price, int quantity, Order order) {
         this.id = id;
-        this.orderItem = orderItem;
         this.orderId = orderId;
+        this.name = name;
+        this.price = price;
         this.quantity = quantity;
+        this.order = order;
     }
 
     public Long getId() {
@@ -39,14 +47,6 @@ public class OrderedItem {
         this.id = id;
     }
 
-    public OrderItem getOrderItem() {
-        return orderItem;
-    }
-
-    public void setOrderItem(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }
-
     public Long getOrderId() {
         return orderId;
     }
@@ -55,11 +55,35 @@ public class OrderedItem {
         this.orderId = orderId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

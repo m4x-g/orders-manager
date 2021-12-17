@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 public class ListService {
-    private final OrderRepository orderRepository;
+    private static OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final OrderItemRepository orderItemRepository;
     private static OrderedItemRepository orderedItemRepository;
@@ -80,5 +80,13 @@ public class ListService {
         } else {
             return orderedItemRepository.findAllByOrderId(id);
         }
+    }
+
+    public static void saveOrder(Order order) {
+        if (order == null) {
+            System.err.println("order is null");
+            return;
+        }
+        orderRepository.save(order);
     }
 }

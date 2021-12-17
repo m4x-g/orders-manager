@@ -5,13 +5,12 @@ import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
 
@@ -35,13 +34,10 @@ public class Order {
     @NotNull
     private User user;
 
-    @OneToMany(mappedBy = "order")
-    private Set<OrderedItem> orderedItemSet;
-
     public Order() {
     }
 
-    public Order(Long id, BigDecimal sumTotal, String status, String title, String description, Date date, User user, Set<OrderedItem> orderedItemSet) {
+    public Order(Long id, BigDecimal sumTotal, String status, String title, String description, Date date, User user) {
         this.id = id;
         this.sumTotal = sumTotal;
         this.status = status;
@@ -49,7 +45,6 @@ public class Order {
         this.description = description;
         this.date = date;
         this.user = user;
-        this.orderedItemSet = orderedItemSet;
     }
 
     public Long getId() {
@@ -108,11 +103,16 @@ public class Order {
         this.user = user;
     }
 
-    public Set<OrderedItem> getOrderedItemSet() {
-        return orderedItemSet;
-    }
-
-    public void setOrderedItemSet(Set<OrderedItem> orderedItemSet) {
-        this.orderedItemSet = orderedItemSet;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", sumTotal=" + sumTotal +
+                ", status='" + status + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                ", user=" + user +
+                '}';
     }
 }

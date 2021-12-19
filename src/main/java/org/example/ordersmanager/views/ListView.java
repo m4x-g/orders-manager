@@ -22,7 +22,7 @@ public class ListView extends VerticalLayout {
     OrderView orderView = new OrderView();
     TextField filterText = new TextField();
     NewOrderDialog newOrderDialog = new NewOrderDialog();
-    Button newOrder = new Button("new order");
+    Button newOrderButton = new Button("new order");
     ListService listService;
 
     public ListView(ListService listService) {
@@ -62,13 +62,32 @@ public class ListView extends VerticalLayout {
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(event -> updateList());
 
-        newOrder.addClickListener(buttonClickEvent -> newOrderDialog.showOrderDialog());
+        newOrderDialog.addListener(NewOrderDialog.SaveEvent.class, this::saveOrder);
+        newOrderDialog.addListener(NewOrderDialog.CloseEvent.class, this::closeNewOrder);
 
-        return new HorizontalLayout(filterText, newOrder);
+        newOrderButton.addClickListener(buttonClickEvent -> newOrderDialog.showOrderDialog());
+
+        return new HorizontalLayout(filterText, newOrderButton);
     }
 
     private void updateList() {
         orderGrid.setItems(listService.findAllOrders(filterText.getValue()));
+    }
+
+    private void saveOrder(NewOrderDialog.SaveEvent event) {
+        System.out.println("save event was fired from the new order dialog window!");
+        System.out.println(" ---> " + event.getOrder().toString());
+        listService.saveOrder(event.getOrder());
+        newOrderDialog.close();
+        newOrderDialog.setOrder(null);
+        newOrderDialog.description.clear();
+        newOrderDialog.title.clear();
+        updateList();
+    }
+
+    private void closeNewOrder(NewOrderDialog.CloseEvent event) {
+        System.out.println("close event vas fired from the new order dialog window!");
+        newOrderDialog.close();
     }
 
     @Secured("ROLE_ADMIN")

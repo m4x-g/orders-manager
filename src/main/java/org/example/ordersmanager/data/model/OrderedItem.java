@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 @Table(name = "ordered_items")
 public class OrderedItem {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -37,6 +37,13 @@ public class OrderedItem {
         this.price = price;
         this.quantity = quantity;
         this.order = order;
+    }
+
+    public OrderedItem(Long orderId, String name, BigDecimal price, int quantity) {
+        this.orderId = orderId;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public Long getId() {

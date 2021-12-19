@@ -89,4 +89,12 @@ public class ListService {
         }
         orderRepository.save(order);
     }
+
+    public void saveNewOrderedItem(OrderedItem orderedItem) {
+        if (orderedItem == null) {
+            System.err.println("ordered item is null!");
+            return;
+        }
+        orderedItemRepository.save(orderedItem);
+    }
 }

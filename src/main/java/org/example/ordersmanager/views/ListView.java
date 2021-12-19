@@ -11,6 +11,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.example.ordersmanager.data.model.Order;
+import org.example.ordersmanager.data.model.OrderItem;
 import org.example.ordersmanager.data.service.ListService;
 import org.springframework.security.access.annotation.Secured;
 
@@ -29,6 +30,9 @@ public class ListView extends VerticalLayout {
         this.listService = listService;
         setSizeFull();
         configureOrderGrid();
+        orderView.items.setItems(listService.findAllItems());
+        orderView.items.setItemLabelGenerator(OrderItem::getName);
+        orderView.addListener(OrderView.SaveEvent.class, this::saveNewOrderItem);
         orderView.setSizeFull();
 
         add(getToolbar(), getContent(), paragraph());
@@ -83,6 +87,11 @@ public class ListView extends VerticalLayout {
         newOrderDialog.description.clear();
         newOrderDialog.title.clear();
         updateList();
+    }
+
+    private void saveNewOrderItem(OrderView.SaveEvent event) {
+        System.out.println("save event was fired from order view!");
+        listService.saveNewOrderedItem(event.getOrderedItem());
     }
 
     private void closeNewOrder(NewOrderDialog.CloseEvent event) {

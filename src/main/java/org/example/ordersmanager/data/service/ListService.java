@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -96,5 +97,13 @@ public class ListService {
             return;
         }
         orderedItemRepository.save(orderedItem);
+    }
+
+    public BigDecimal getSum(Long orderId) {
+        return orderedItemRepository.getSum(orderId);
+    }
+
+    public void updateSum(BigDecimal newSum, Long orderId) {
+        orderRepository.updateSum(newSum, orderId);
     }
 }

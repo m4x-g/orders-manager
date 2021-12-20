@@ -33,6 +33,7 @@ public class ListView extends VerticalLayout {
         orderView.items.setItems(listService.findAllItems());
         orderView.items.setItemLabelGenerator(OrderItem::getName);
         orderView.addListener(OrderView.SaveEvent.class, this::saveNewOrderItem);
+        orderView.addListener(OrderView.CloseEvent.class, this::closeOrderView);
         orderView.setSizeFull();
 
         add(getToolbar(), getContent(), paragraph());
@@ -92,6 +93,8 @@ public class ListView extends VerticalLayout {
     private void saveNewOrderItem(OrderView.SaveEvent event) {
         System.out.println("save event was fired from order view!");
         listService.saveNewOrderedItem(event.getOrderedItem());
+        listService.updateSum(listService.getSum(event.orderedItem.getOrderId()), event.orderedItem.getOrderId());
+        System.out.println(listService.getSum(event.getOrderedItem().getOrderId()).toString());
     }
 
     private void closeNewOrder(NewOrderDialog.CloseEvent event) {
@@ -99,8 +102,14 @@ public class ListView extends VerticalLayout {
         newOrderDialog.close();
     }
 
+    private void closeOrderView(OrderView.CloseEvent event) {
+        System.out.println("close event was fired from OrderView!");
+        orderView.close();
+        updateList();
+    }
+
     @Secured("ROLE_ADMIN")
     private Paragraph paragraph() {
-        return new Paragraph("wizards only, fool!");
+        return new Paragraph(listService.getSum(1l).toString());
     }
 }

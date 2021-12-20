@@ -34,7 +34,7 @@ public class OrderView extends Dialog {
     H1 h1 = new H1("not implemented yet 😐");
     Button save = new Button("save", event -> this.close());
     Button delete = new Button("delete", event -> this.close());
-    Button close = new Button("close", event -> this.close());
+    Button close = new Button("close", event -> fireEvent(new CloseEvent(this)));
 
     public OrderView() {
         this.setCloseOnOutsideClick(false);
@@ -75,10 +75,12 @@ public class OrderView extends Dialog {
     }
 
     public void showOrderDetails(Order order) {
-        h1.setText("Order ID " + order.getId().toString() + " was clicked!");
-        orderId = order.getId();
-        updateOrderedItemGrid(order.getId());
-        this.open();
+        if (order != null) {
+            h1.setText("Order ID " + order.getId().toString() + " was clicked!");
+            orderId = order.getId();
+            updateOrderedItemGrid(order.getId());
+            this.open();
+        }
     }
 
     private void configureOrderedItemGrid() {
@@ -109,6 +111,12 @@ public class OrderView extends Dialog {
     public static class SaveEvent extends OrderViewEvent {
         public SaveEvent(OrderView source, OrderedItem orderedItem) {
             super(source, orderedItem);
+        }
+    }
+
+    public static class CloseEvent extends OrderViewEvent {
+        public CloseEvent(OrderView source) {
+            super(source, null);
         }
     }
 

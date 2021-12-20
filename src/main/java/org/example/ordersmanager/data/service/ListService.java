@@ -99,6 +99,18 @@ public class ListService {
         orderedItemRepository.save(orderedItem);
     }
 
+    public Long countOrderedItemsByNameAndOrderId(String itemName, Long orderId) {
+        return orderedItemRepository.countOrderedItemsByNameAndOrderId(itemName, orderId);
+    }
+
+    public OrderedItem findByNameAndOrderId(String itemName, Long orderId) {
+        return orderedItemRepository.findByNameAndOrderId(itemName, orderId);
+    }
+
+    public void updateOrderedQuantity(Integer newQuantity, Long orderId, String itemName) {
+        orderedItemRepository.updateOrderedQuantity(newQuantity, orderId, itemName);
+    }
+
     public BigDecimal getSum(Long orderId) {
         return orderedItemRepository.getSum(orderId);
     }

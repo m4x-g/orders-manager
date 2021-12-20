@@ -12,6 +12,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.example.ordersmanager.data.model.Order;
 import org.example.ordersmanager.data.model.OrderItem;
+import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.service.ListService;
 import org.springframework.security.access.annotation.Secured;
 
@@ -92,7 +93,22 @@ public class ListView extends VerticalLayout {
 
     private void saveNewOrderItem(OrderView.SaveEvent event) {
         System.out.println("save event was fired from order view!");
-        listService.saveNewOrderedItem(event.getOrderedItem());
+        Long orderId = event.getOrderedItem().getOrderId();
+        String itemName = event.getOrderedItem().getName();
+        System.out.println(" -- save newOrder Items count -->" + listService.countOrderedItemsByNameAndOrderId(itemName, orderId));
+        if (listService.countOrderedItemsByNameAndOrderId(itemName, orderId) > 0) {
+            // update the amount of the already existing item
+            OrderedItem existingItem = listService.findByNameAndOrderId(itemName, orderId);
+            OrderedItem newItem = event.getOrderedItem();
+
+            Integer oldQuantity = existingItem.getQuantity();
+            Integer newQuantity = oldQuantity + newItem.getQuantity();
+
+            listService.updateOrderedQuantity(newQuantity, orderId, itemName);
+        } else {
+            // insert the new item in to the table
+            listService.saveNewOrderedItem(event.getOrderedItem());
+        }
         listService.updateSum(listService.getSum(event.orderedItem.getOrderId()), event.orderedItem.getOrderId());
         System.out.println(listService.getSum(event.getOrderedItem().getOrderId()).toString());
     }

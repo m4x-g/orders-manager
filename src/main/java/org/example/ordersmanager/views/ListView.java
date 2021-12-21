@@ -1,6 +1,8 @@
 package org.example.ordersmanager.views;
 
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Paragraph;
@@ -10,11 +12,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import org.example.ordersmanager.data.model.Order;
 import org.example.ordersmanager.data.model.OrderItem;
 import org.example.ordersmanager.data.model.OrderedItem;
 import org.example.ordersmanager.data.service.ListService;
 import org.springframework.security.access.annotation.Secured;
+
+import java.util.Locale;
+import java.util.logging.Logger;
 
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("garbage order manager 😐")
@@ -26,6 +32,8 @@ public class ListView extends VerticalLayout {
     NewOrderDialog newOrderDialog = new NewOrderDialog();
 //    Button newOrderButton = new Button("new order");
     Button newOrderButton = new Button(getTranslation("btn.new-order"));
+    Button changeLocale = new Button("lang");
+
     ListService listService;
 
     public ListView(ListService listService) {
@@ -44,8 +52,14 @@ public class ListView extends VerticalLayout {
 
     private void configureOrderGrid() {
         orderGrid.setSizeFull();
-        orderGrid.setColumns("id", "sumTotal", "status", "title", "description", "date");
-        orderGrid.addColumn(order -> order.getUser().getName()).setHeader("user name");
+        orderGrid.removeAllColumns();
+//        orderGrid.setColumns("id", "sumTotal", "status", "title", "description", "date");
+        orderGrid.addColumn(Order::getId).setHeader("id");
+        orderGrid.addColumn(Order::getTotalPrice).setHeader("price 1");
+        orderGrid.addColumn(Order::getStatus).setHeader("status");
+        orderGrid.addColumn(Order::getTitle).setHeader("title");
+        orderGrid.addColumn(Order::getDescription).setHeader("description");
+        orderGrid.addColumn(Order::getDate).setHeader("date");
         orderGrid.addColumn(order -> order.getUser().getAddress()).setHeader("user address");
         orderGrid.getColumns().forEach(orderColumn -> orderColumn.setAutoWidth(true));
 
@@ -74,7 +88,9 @@ public class ListView extends VerticalLayout {
 
         newOrderButton.addClickListener(buttonClickEvent -> newOrderDialog.showOrderDialog());
 
-        return new HorizontalLayout(filterText, newOrderButton);
+        changeLocale.addClickListener(buttonClickEvent -> VaadinSession.getCurrent().setLocale(Locale.GERMAN));
+
+        return new HorizontalLayout(filterText, newOrderButton, changeLocale);
     }
 
     private void updateList() {
@@ -110,7 +126,6 @@ public class ListView extends VerticalLayout {
             // insert the new item in to the table
             listService.saveNewOrderedItem(event.getOrderedItem());
         }
-        listService.updateSum(listService.getSum(event.orderedItem.getOrderId()), event.orderedItem.getOrderId());
         System.out.println(listService.getSum(event.getOrderedItem().getOrderId()).toString());
     }
 

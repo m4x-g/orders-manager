@@ -66,7 +66,6 @@ public class NewOrderDialog extends Dialog {
         order.setTitle(title.getValue());
         order.setDate(new Date());
         order.setStatus("new \uD83D\uDE2E\u200D\uD83D\uDCA8");
-        order.setSumTotal(BigDecimal.valueOf(0l));
 
         CustomUserDetails user = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         order.setUser(user.getUser());

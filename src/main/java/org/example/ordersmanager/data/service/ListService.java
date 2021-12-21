@@ -114,8 +114,4 @@ public class ListService {
     public BigDecimal getSum(Long orderId) {
         return orderedItemRepository.getSum(orderId);
     }
-
-    public void updateSum(BigDecimal newSum, Long orderId) {
-        orderRepository.updateSum(newSum, orderId);
-    }
 }

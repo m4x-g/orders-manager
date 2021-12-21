@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS orders (
 	order_status VARCHAR(255) NOT NULL,
 	order_title VARCHAR(255) NOT NULL,
 	order_description VARCHAR(255) NOT NULL,
-	order_sum_total NUMERIC NOT NULL,
 	PRIMARY KEY(order_id),
 	CONSTRAINT fk_user
 		FOREIGN KEY(user_id)

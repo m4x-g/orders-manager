@@ -1,6 +1,7 @@
 package org.example.ordersmanager.data.i18n;
 
 import com.vaadin.flow.i18n.I18NProvider;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import static java.util.Locale.ENGLISH;
 import static java.util.Locale.GERMAN;
 import static java.util.ResourceBundle.getBundle;
 
+@Service
 public class VaadinI18NProvider implements I18NProvider {
 
     public static final String RESOURCE_BUNDLE_NAME = "vaadinapp";

@@ -4,7 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -13,9 +15,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long id;
-
-    @Column(name = "order_sum_total")
-    private BigDecimal sumTotal;
 
     @Column(name = "order_status")
     private String status;
@@ -34,12 +33,15 @@ public class Order {
     @NotNull
     private User user;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    private List<OrderedItem> orderedItems = new ArrayList<>();
+
     public Order() {
     }
 
     public Order(Long id, BigDecimal sumTotal, String status, String title, String description, Date date, User user) {
         this.id = id;
-        this.sumTotal = sumTotal;
         this.status = status;
         this.title = title;
         this.description = description;
@@ -53,14 +55,6 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public BigDecimal getSumTotal() {
-        return sumTotal;
-    }
-
-    public void setSumTotal(BigDecimal sumTotal) {
-        this.sumTotal = sumTotal;
     }
 
     public String getStatus() {
@@ -103,11 +97,33 @@ public class Order {
         this.user = user;
     }
 
+    public List<OrderedItem> getOrderedItems() {
+        return orderedItems;
+    }
+
+    public void setOrderedItems(List<OrderedItem> orderedItems) {
+        this.orderedItems = orderedItems;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return orderedItems.stream().map(orderedItem -> {
+            return orderedItem.getPrice().multiply(new BigDecimal(orderedItem.getQuantity()));
+        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getTotalPrice2() {
+        BigDecimal result = BigDecimal.ZERO;
+
+        for (OrderedItem item : orderedItems) {
+            result = result.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
+        }
+        return result;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", sumTotal=" + sumTotal +
                 ", status='" + status + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

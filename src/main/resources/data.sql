@@ -7,14 +7,14 @@ VALUES
 	('glob', 'mars', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'admin'),
 	('orgalorg', 'everywhere', '$2a$10$El65VVvQSvFituLaf9seU.hhEDPAs.l7.8/VfJPiTb1IirukqLp0S', 'admin');
 
-INSERT INTO orders (user_id, order_date, order_status, order_title, order_description, order_sum_total)
+INSERT INTO orders (user_id, order_date, order_status, order_title, order_description)
 VALUES
-	(1, '1970-01-01', 'pending', 'order_1_title', 'order_1_description', '19.75'),
-	(1, '2001-06-27', 'canceled', 'order_2_title', 'order_2_description', '199.95'),
-	(3, '2025-10-15', 'delivered', 'order_3_title', 'order_3_description', '11.05'),
-	(1, '1996-07-13', 'pending', 'order_4_title', 'order_4_description', '20.00'),
-	(2, '2011-03-17', 'pending', 'order_5_title', 'order_5_description', '17.99'),
-	(2, '2012-10-06', 'pending', 'order_6_title', 'order_6_description', '3.25');
+	(1, '1970-01-01', 'pending', 'order_1_title', 'order_1_description'),
+	(1, '2001-06-27', 'canceled', 'order_2_title', 'order_2_description'),
+	(3, '2025-10-15', 'delivered', 'order_3_title', 'order_3_description'),
+	(1, '1996-07-13', 'pending', 'order_4_title', 'order_4_description'),
+	(2, '2011-03-17', 'pending', 'order_5_title', 'order_5_description'),
+	(2, '2012-10-06', 'pending', 'order_6_title', 'order_6_description');
 
 INSERT INTO items (name, price)
 VALUES

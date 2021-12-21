@@ -24,7 +24,8 @@ public class ListView extends VerticalLayout {
     OrderView orderView = new OrderView();
     TextField filterText = new TextField();
     NewOrderDialog newOrderDialog = new NewOrderDialog();
-    Button newOrderButton = new Button("new order");
+//    Button newOrderButton = new Button("new order");
+    Button newOrderButton = new Button(getTranslation("btn.new-order"));
     ListService listService;
 
     public ListView(ListService listService) {

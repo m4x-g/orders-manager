@@ -1,11 +1,10 @@
 package org.example.ordersmanager.views;
 
-import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,7 +19,6 @@ import org.example.ordersmanager.data.service.ListService;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Locale;
-import java.util.logging.Logger;
 
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("garbage order manager 😐")
@@ -32,7 +30,7 @@ public class ListView extends VerticalLayout {
     NewOrderDialog newOrderDialog = new NewOrderDialog();
 //    Button newOrderButton = new Button("new order");
     Button newOrderButton = new Button(getTranslation("btn.new-order"));
-    Button changeLocale = new Button("lang");
+    Button changeLocale = new Button("change language");
 
     ListService listService;
 
@@ -88,7 +86,7 @@ public class ListView extends VerticalLayout {
 
         newOrderButton.addClickListener(buttonClickEvent -> newOrderDialog.showOrderDialog());
 
-        changeLocale.addClickListener(buttonClickEvent -> VaadinSession.getCurrent().setLocale(Locale.GERMAN));
+        changeLocale.addClickListener(buttonClickEvent -> changeLanguage());
 
         return new HorizontalLayout(filterText, newOrderButton, changeLocale);
     }
@@ -138,6 +136,17 @@ public class ListView extends VerticalLayout {
         System.out.println("close event was fired from OrderView!");
         orderView.close();
         updateList();
+    }
+
+    private void changeLanguage() {
+        Notification notification = new Notification("locale set to " + VaadinSession.getCurrent().getLocale().getDisplayLanguage(), 1000, Notification.Position.TOP_CENTER);
+        if (VaadinSession.getCurrent().getLocale().equals(Locale.ENGLISH)) {
+            VaadinSession.getCurrent().setLocale(Locale.GERMAN);
+            notification.open();
+        } else {
+            VaadinSession.getCurrent().setLocale(Locale.ENGLISH);
+            notification.open();
+        }
     }
 
     @Secured("ROLE_ADMIN")

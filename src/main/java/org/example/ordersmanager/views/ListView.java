@@ -139,14 +139,18 @@ public class ListView extends VerticalLayout {
     }
 
     private void changeLanguage() {
-        Notification notification = new Notification("locale set to " + VaadinSession.getCurrent().getLocale().getDisplayLanguage(), 1000, Notification.Position.TOP_CENTER);
         if (VaadinSession.getCurrent().getLocale().equals(Locale.ENGLISH)) {
             VaadinSession.getCurrent().setLocale(Locale.GERMAN);
-            notification.open();
+            showLocaleChangeNotification();
         } else {
             VaadinSession.getCurrent().setLocale(Locale.ENGLISH);
-            notification.open();
+            showLocaleChangeNotification();
         }
+    }
+
+    private void showLocaleChangeNotification() {
+        Notification notification = new Notification("locale set to " + VaadinSession.getCurrent().getLocale().getDisplayLanguage(), 1000, Notification.Position.TOP_CENTER);
+        notification.open();
     }
 
     @Secured("ROLE_ADMIN")

@@ -1,6 +1,7 @@
 package org.example.ordersmanager.data.i18n;
 
 import com.vaadin.flow.i18n.I18NProvider;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +30,10 @@ public class VaadinI18NProvider implements I18NProvider {
 
     @Override
     public String getTranslation(String key, Locale locale, Object... params) {
-        ResourceBundle resourceBundle = RESOURCE_BUNDLE_EN;
-        if (GERMAN.equals(resourceBundle)) {
+        ResourceBundle resourceBundle;
+        if (VaadinSession.getCurrent().getLocale().equals(Locale.ENGLISH)) {
+            resourceBundle = RESOURCE_BUNDLE_EN;
+        } else {
             resourceBundle = RESOURCE_BUNDLE_DE;
         }
         return (resourceBundle.containsKey(key)) ? resourceBundle.getString(key) : key;
